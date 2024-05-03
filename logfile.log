@@ -1,0 +1,188 @@
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App is healthy"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App is healthy"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App is healthy"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"code":"3F000","driverError":{"code":"3F000","file":"namespace.c","length":105,"line":"3095","name":"error","position":"14","routine":"get_namespace_oid","severity":"ERROR"},"file":"namespace.c","length":105,"level":"warn","line":"3095","position":"14","query":"CREATE TABLE \"app-project\".\"customer\" (\"id\" SERIAL NOT NULL, \"FirstName\" character varying NOT NULL, \"LastName\" character varying NOT NULL, \"City\" character varying NOT NULL, \"County\" character varying NOT NULL, \"Phone\" character varying NOT NULL, CONSTRAINT \"PK_a7a13f4cacb744524e44dfdad32\" PRIMARY KEY (\"id\"))","routine":"get_namespace_oid","severity":"ERROR"}
+{"level":"info","message":"App in running on 5000"}
+{"code":"3F000","driverError":{"code":"3F000","file":"namespace.c","length":105,"line":"3095","name":"error","position":"14","routine":"get_namespace_oid","severity":"ERROR"},"file":"namespace.c","length":105,"level":"warn","line":"3095","position":"14","query":"CREATE TABLE \"app-project\".\"customer\" (\"id\" SERIAL NOT NULL, \"FirstName\" character varying NOT NULL, \"LastName\" character varying NOT NULL, \"City\" character varying NOT NULL, \"County\" character varying NOT NULL, \"Phone\" character varying NOT NULL, CONSTRAINT \"PK_a7a13f4cacb744524e44dfdad32\" PRIMARY KEY (\"id\"))","routine":"get_namespace_oid","severity":"ERROR"}
+{"level":"info","message":"App in running on 5000"}
+{"code":"3F000","driverError":{"code":"3F000","file":"namespace.c","length":105,"line":"3095","name":"error","position":"14","routine":"get_namespace_oid","severity":"ERROR"},"file":"namespace.c","length":105,"level":"warn","line":"3095","position":"14","query":"CREATE TABLE \"app-project\".\"customer\" (\"id\" SERIAL NOT NULL, \"FirstName\" character varying NOT NULL, \"LastName\" character varying NOT NULL, \"City\" character varying NOT NULL, \"County\" character varying NOT NULL, \"Phone\" character varying NOT NULL, CONSTRAINT \"PK_a7a13f4cacb744524e44dfdad32\" PRIMARY KEY (\"id\"))","routine":"get_namespace_oid","severity":"ERROR"}
+{"level":"info","message":"App in running on 5000"}
+{"code":"3F000","driverError":{"code":"3F000","file":"namespace.c","length":105,"line":"3095","name":"error","position":"14","routine":"get_namespace_oid","severity":"ERROR"},"file":"namespace.c","length":105,"level":"warn","line":"3095","position":"14","query":"CREATE TABLE \"app-project\".\"customer\" (\"id\" SERIAL NOT NULL, \"FirstName\" character varying NOT NULL, \"LastName\" character varying NOT NULL, \"City\" character varying NOT NULL, \"County\" character varying NOT NULL, \"Phone\" character varying NOT NULL, CONSTRAINT \"PK_a7a13f4cacb744524e44dfdad32\" PRIMARY KEY (\"id\"))","routine":"get_namespace_oid","severity":"ERROR"}
+{"level":"info","message":"App in running on 5000"}
+{"code":"3F000","driverError":{"code":"3F000","file":"namespace.c","length":105,"line":"3095","name":"error","position":"14","routine":"get_namespace_oid","severity":"ERROR"},"file":"namespace.c","length":105,"level":"warn","line":"3095","position":"14","query":"CREATE TABLE \"app-project\".\"customer\" (\"id\" SERIAL NOT NULL, \"FirstName\" character varying NOT NULL, \"LastName\" character varying NOT NULL, \"City\" character varying NOT NULL, \"County\" character varying NOT NULL, \"Phone\" character varying NOT NULL, CONSTRAINT \"PK_a7a13f4cacb744524e44dfdad32\" PRIMARY KEY (\"id\"))","routine":"get_namespace_oid","severity":"ERROR"}
+{"level":"info","message":"App in running on 5000"}
+{"code":"3F000","driverError":{"code":"3F000","file":"namespace.c","length":105,"line":"3095","name":"error","position":"14","routine":"get_namespace_oid","severity":"ERROR"},"file":"namespace.c","length":105,"level":"warn","line":"3095","position":"14","query":"CREATE TABLE \"app-project\".\"customer\" (\"id\" SERIAL NOT NULL, \"FirstName\" character varying NOT NULL, \"LastName\" character varying NOT NULL, \"City\" character varying NOT NULL, \"Country\" character varying NOT NULL, \"Phone\" character varying NOT NULL, CONSTRAINT \"PK_a7a13f4cacb744524e44dfdad32\" PRIMARY KEY (\"id\"))","routine":"get_namespace_oid","severity":"ERROR"}
+{"level":"info","message":"App in running on 5000"}
+{"code":"3F000","driverError":{"code":"3F000","file":"namespace.c","length":105,"line":"3095","name":"error","position":"14","routine":"get_namespace_oid","severity":"ERROR"},"file":"namespace.c","length":105,"level":"warn","line":"3095","position":"14","query":"CREATE TABLE \"app-project\".\"customer\" (\"id\" SERIAL NOT NULL, \"FirstName\" character varying NOT NULL, \"LastName\" character varying NOT NULL, \"City\" character varying NOT NULL, \"Country\" character varying NOT NULL, \"Phone\" character varying NOT NULL, CONSTRAINT \"PK_a7a13f4cacb744524e44dfdad32\" PRIMARY KEY (\"id\"))","routine":"get_namespace_oid","severity":"ERROR"}
+{"level":"info","message":"App in running on 5000"}
+{"code":"3F000","driverError":{"code":"3F000","file":"namespace.c","length":105,"line":"3095","name":"error","position":"14","routine":"get_namespace_oid","severity":"ERROR"},"file":"namespace.c","length":105,"level":"warn","line":"3095","position":"14","query":"CREATE TABLE \"app-project\".\"customer\" (\"id\" SERIAL NOT NULL, \"FirstName\" character varying NOT NULL, \"LastName\" character varying NOT NULL, \"City\" character varying NOT NULL, \"Country\" character varying NOT NULL, \"Phone\" character varying NOT NULL, CONSTRAINT \"PK_a7a13f4cacb744524e44dfdad32\" PRIMARY KEY (\"id\"))","routine":"get_namespace_oid","severity":"ERROR"}
+{"level":"info","message":"App in running on 5000"}
+{"code":"3F000","driverError":{"code":"3F000","file":"namespace.c","length":105,"line":"3095","name":"error","position":"14","routine":"get_namespace_oid","severity":"ERROR"},"file":"namespace.c","length":105,"level":"warn","line":"3095","position":"14","query":"CREATE TABLE \"app-project\".\"customer\" (\"id\" SERIAL NOT NULL, \"FirstName\" character varying NOT NULL, \"LastName\" character varying NOT NULL, \"City\" character varying NOT NULL, \"Country\" character varying NOT NULL, \"Phone\" character varying NOT NULL, CONSTRAINT \"PK_a7a13f4cacb744524e44dfdad32\" PRIMARY KEY (\"id\"))","routine":"get_namespace_oid","severity":"ERROR"}
+{"level":"info","message":"App in running on 5000"}
+{"code":"3F000","driverError":{"code":"3F000","file":"namespace.c","length":105,"line":"3095","name":"error","position":"14","routine":"get_namespace_oid","severity":"ERROR"},"file":"namespace.c","length":105,"level":"warn","line":"3095","position":"14","query":"CREATE TABLE \"app-project\".\"customer\" (\"id\" SERIAL NOT NULL, \"FirstName\" character varying NOT NULL, \"LastName\" character varying NOT NULL, \"City\" character varying NOT NULL, \"Country\" character varying NOT NULL, \"Phone\" character varying NOT NULL, CONSTRAINT \"PK_a7a13f4cacb744524e44dfdad32\" PRIMARY KEY (\"id\"))","routine":"get_namespace_oid","severity":"ERROR"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"code":"23502","column":"FirstName","detail":"Failing row contains (1, null, null, null, null, null).","driverError":{"code":"23502","column":"FirstName","detail":"Failing row contains (1, null, null, null, null, null).","file":"execMain.c","length":238,"line":"2009","name":"error","routine":"ExecConstraints","schema":"app-project","severity":"ERROR","table":"customer"},"file":"execMain.c","length":238,"level":"warn","line":"2009","parameters":[],"query":"INSERT INTO \"app-project\".\"customer\"(\"FirstName\", \"LastName\", \"City\", \"Country\", \"Phone\") VALUES (DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT) RETURNING \"id\"","routine":"ExecConstraints","schema":"app-project","severity":"ERROR","table":"customer"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"code":"23502","column":"FirstName","detail":"Failing row contains (2, null, null, null, null, null).","driverError":{"code":"23502","column":"FirstName","detail":"Failing row contains (2, null, null, null, null, null).","file":"execMain.c","length":238,"line":"2009","name":"error","routine":"ExecConstraints","schema":"app-project","severity":"ERROR","table":"customer"},"file":"execMain.c","length":238,"level":"warn","line":"2009","parameters":[],"query":"INSERT INTO \"app-project\".\"customer\"(\"FirstName\", \"LastName\", \"City\", \"Country\", \"Phone\") VALUES (DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT) RETURNING \"id\"","routine":"ExecConstraints","schema":"app-project","severity":"ERROR","table":"customer"}
+{"code":"23502","column":"FirstName","detail":"Failing row contains (3, null, null, null, null, null).","driverError":{"code":"23502","column":"FirstName","detail":"Failing row contains (3, null, null, null, null, null).","file":"execMain.c","length":238,"line":"2009","name":"error","routine":"ExecConstraints","schema":"app-project","severity":"ERROR","table":"customer"},"file":"execMain.c","length":238,"level":"warn","line":"2009","parameters":[],"query":"INSERT INTO \"app-project\".\"customer\"(\"FirstName\", \"LastName\", \"City\", \"Country\", \"Phone\") VALUES (DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT) RETURNING \"id\"","routine":"ExecConstraints","schema":"app-project","severity":"ERROR","table":"customer"}
+{"code":"23502","column":"FirstName","detail":"Failing row contains (4, null, null, null, null, null).","driverError":{"code":"23502","column":"FirstName","detail":"Failing row contains (4, null, null, null, null, null).","file":"execMain.c","length":238,"line":"2009","name":"error","routine":"ExecConstraints","schema":"app-project","severity":"ERROR","table":"customer"},"file":"execMain.c","length":238,"level":"warn","line":"2009","parameters":[],"query":"INSERT INTO \"app-project\".\"customer\"(\"FirstName\", \"LastName\", \"City\", \"Country\", \"Phone\") VALUES (DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT) RETURNING \"id\"","routine":"ExecConstraints","schema":"app-project","severity":"ERROR","table":"customer"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"code":"23502","column":"FirstName","detail":"Failing row contains (5, null, null, null, null, null).","driverError":{"code":"23502","column":"FirstName","detail":"Failing row contains (5, null, null, null, null, null).","file":"execMain.c","length":238,"line":"2009","name":"error","routine":"ExecConstraints","schema":"app-project","severity":"ERROR","table":"customer"},"file":"execMain.c","length":238,"level":"warn","line":"2009","parameters":[],"query":"INSERT INTO \"app-project\".\"customer\"(\"FirstName\", \"LastName\", \"City\", \"Country\", \"Phone\") VALUES (DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT) RETURNING \"id\"","routine":"ExecConstraints","schema":"app-project","severity":"ERROR","table":"customer"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":{}}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"Database Connected"}
+{"level":"info","message":"App in running on 5000"}
+{"level":"info","message":"App in running on 5000"}
