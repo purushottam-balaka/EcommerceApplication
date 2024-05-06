@@ -8,18 +8,18 @@ export class OrderItem{
     id:number
 
     @Column()
-    UnitPrice:number
+    unitPrice:number
 
     @Column()
-    Quantity:number
+    quantity:number
 
     @ManyToOne( type => Order)
     @JoinColumn()
-    Order:Order
+    order:Order
 
     @OneToMany(type =>Product, product=>product.supplier)
     @JoinColumn()
-    Product:Product   
+    product:Product   
 }
 
 

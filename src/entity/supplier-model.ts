@@ -7,22 +7,22 @@ export class Supplier{
     id:number
 
     @Column()
-    CompanyName:string
+    companyName:string
 
     @Column()
-    ContactName:string
+    contactName:string
 
     @Column()
-    City:string
+    city:string
 
     @Column()
-    Country:string
+    country:string
 
     @Column()
-    Pincode:number
+    pincode:number
 
     @Column()
-    Fax:string
+    fax:string
 
     @ManyToOne(()=>Product, product=>product.supplier)
     @JoinColumn()

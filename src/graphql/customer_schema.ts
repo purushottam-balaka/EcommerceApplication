@@ -2,57 +2,63 @@ import { gql } from "postgraphile";
 
 export const Customer_schema=gql`
 extend type Query{
-    customerGet:[getCustomerDetails]
+    customerGet(input : customerInput!):[Customer!] 
+}
+input customerInput{
+    id:Int
 }
 type getCustomerDetails{
-    FirstName:String
-    LastName:String
-    City:String
-    Country:String
-    Phone:String
+    firstName:String
+    lastName:String
+    city:String
+    country:String
+    phone:Int
 }
 input addCustInput{
-    FirstName:String
-    LastName:String
-    City: String
-    Country:String
-    Phone:String
+    firstName:String!
+    lastName:String!
+    city: String!
+    country:String!
+    phone:Int!
+    password:String!
+    primaryNumber:Int!
 }
 extend type Mutation{
-    add_customer(input : addCustInput):add_new_customer
-    update_customer(input:updateCustInput):updateCustomer
-    delete_customer(input : deleteCustInput):deleteCustomer
+    add_customer(input : addCustInput!):Customer
+    verifyingUserLogin(input : userLoginInput!):userLogin
+    update_customer(input:updateCustInput!):updateCustomer
+    delete_customer(input : deleteCustInput!):deleteCustomer
+}
+input userLoginInput{
+    primaryNumber:Int!
+    password:String!
+}
+type userLogin{
+    msg:String!
 }
 input deleteCustInput{
-    id:String
+    id:Int
 }
 type deleteCustomer{
     msg:String
 }
 
 input updateCustInput{
-    id:String
-    FirstName:String
-    LastName:String
-    City: String
-    Country:String
-    Phone:String
+    id:Int
+    firstName:String
+    lastName:String
+    city: String
+    country:String
+    phone:Int
 }
 type updateCustomer{
-    FirstName:String
-    LastName:String
-    City: String
-    Country:String
-    Phone:String
-    id:String
+    firstName:String
+    lastName:String
+    city: String
+    country:String
+    phone:Int
+    id:Int
 }
 
-type add_new_customer{
-    id:String
-    FirstName:String
-    LastName:String
-    City: String
-    Country:String
-    Phone:String
-}
+
 `

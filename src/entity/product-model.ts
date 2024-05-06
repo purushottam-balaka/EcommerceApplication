@@ -7,16 +7,16 @@ export class  Product{
     id:number
 
     @Column()
-    ProductNmae:string
+    productNmae:string
 
     @Column()
-    UnitPrice:number
+    unitPrice:number
 
     @Column()
-    Package:string
+    package:string
 
     @Column()
-    IsDiscontinued:boolean
+    isDiscontinued:boolean
 
     @OneToMany(()=>Supplier, supplier=>supplier.product)
     @JoinColumn()

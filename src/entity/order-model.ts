@@ -5,16 +5,16 @@ import { Customer } from './customer-model'
 @Entity({schema:'app_ecommerce'})
 export class Order{
     @PrimaryGeneratedColumn()
-    id:Number
+    id:number
 
     @Column()
-    OrderDate:Date
+    orderDate:Date
 
     @Column()
-    TotalAmount:Number
+    totalAmount:number
 
     @ManyToOne(type=>Customer)
     @JoinColumn()
-    Customer:Customer
+    customer:Customer
 
 }

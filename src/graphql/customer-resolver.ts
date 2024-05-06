@@ -2,9 +2,9 @@
 import { CustomerService } from "../services/customer-service"
 export const customerResolver={
     Query:{
-        customerGet: async()=>{
+        customerGet: async(_,args)=>{
             const user=new CustomerService()
-            const data=await user.getCustomerDetails()
+            const data=await user.getCustomerDetails(args.input.id)
             return data
         }
     },
@@ -12,13 +12,18 @@ export const customerResolver={
         
         add_customer:async(_,args)=>{
             const user=new CustomerService()
-            const data= await user.add_new_customer(args.input.FirstName,args.input.LastName,args.input.City,args.input.Country, args.input.Phone)
+            const data= await user.add_new_customer(args.input.firstName,args.input.lastName,args.input.city,args.input.country, args.input.phone, args.input.password,args.input.primaryNumber)
+            return data
+        },
+        verifyingUserLogin:async(_,args)=>{
+            const user = new CustomerService()
+            const data= await user.userLogin(args.input.primaryNumber, args.input.password)
             return data
         },
 
         update_customer:async(_,args)=>{
             const user=new CustomerService()
-            const data=await user.updateCustomer(args.input.id,args.input.FirstName,args.input.LastName,args.input.City,args.input.Country, args.input.Phone)
+            const data=await user.updateCustomer(args.input.id,args.input.firstName,args.input.lastName,args.input.city,args.input.country, args.input.phone)
             return data
         },
 

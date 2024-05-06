@@ -6,18 +6,24 @@ export class Customer{
     id:Number
 
     @Column()
-    FirstName:String
+    firstName:String
+
+    @Column({nullable:true})
+    lastName:String
+
+    @Column({nullable:true})
+    city:String
 
     @Column()
-    LastName:String
+    password:string
 
-    @Column()
-    City:String
+    @Column({nullable:true})
+    country:String
 
-    @Column()
-    Country:String
+    @Column({unique:true})
+    phone:String
 
-    @Column()
-    Phone:String
+    @Column({unique:true})
+    primaryNumber:Number
 
 }
