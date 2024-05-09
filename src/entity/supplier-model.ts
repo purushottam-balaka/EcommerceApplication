@@ -24,7 +24,7 @@ export class Supplier{
     @Column()
     fax:string
 
-    @ManyToOne(()=>Product, product=>product.supplier)
-    @JoinColumn()
-    product:Product
+    @ManyToOne(()=>Product, product=>product.supplierId)
+    @JoinColumn({name:'productId'})
+    productId:Product
 }

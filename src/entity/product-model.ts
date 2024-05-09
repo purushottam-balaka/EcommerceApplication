@@ -7,7 +7,7 @@ export class  Product{
     id:number
 
     @Column()
-    productNmae:string
+    productName:string
 
     @Column()
     unitPrice:number
@@ -18,7 +18,10 @@ export class  Product{
     @Column()
     isDiscontinued:boolean
 
-    @OneToMany(()=>Supplier, supplier=>supplier.product)
-    @JoinColumn()
-    supplier:Supplier[]
+    @Column({nullable:true})
+    availableQuantitiy:number
+
+    @OneToMany(()=>Supplier, supplier=>supplier.productId)
+    @JoinColumn({name:'supplierId'})
+    supplierId:Supplier[]
 }

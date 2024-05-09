@@ -14,12 +14,12 @@ export class OrderItem{
     quantity:number
 
     @ManyToOne( type => Order)
-    @JoinColumn()
-    order:Order
+    @JoinColumn({name:'orderId'})
+    orderId:Order
 
-    @OneToMany(type =>Product, product=>product.supplier)
-    @JoinColumn()
-    product:Product   
+    @ManyToOne(type =>Product)
+    @JoinColumn({name:'productId'})
+    productId:Product   
 }
 
 

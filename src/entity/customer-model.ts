@@ -21,9 +21,6 @@ export class Customer{
     country:String
 
     @Column({unique:true})
-    phone:String
-
-    @Column({unique:true})
     primaryNumber:Number
 
 }

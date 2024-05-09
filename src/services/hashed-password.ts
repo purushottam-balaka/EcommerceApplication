@@ -1,9 +1,4 @@
-import  crypto from 'crypto'
-import bcrypt from 'bcrypt'
-import { errorLogger, infologger } from '../../logger'
-import jwt from 'jsonwebtoken'
-import  CryptoJS from 'crypto-js'
-
+import * as CryptoJS from 'crypto-js'
 
 export const  hashedPassword=async(password: string, secretKey: string)=>{
     const encryptedPassword = CryptoJS.AES.encrypt(password, secretKey).toString();
@@ -13,8 +8,6 @@ export const  hashedPassword=async(password: string, secretKey: string)=>{
 export const decryptPassword= async(encryptedPassword:string, secretKey: string)=> {
     const decryptedBytes = CryptoJS.AES.decrypt(encryptedPassword, secretKey);
     let  decryptedPassword = decryptedBytes.toString(CryptoJS.enc.Utf8);
-    console.log('decrp',decryptedPassword)
-    decryptedPassword= decryptedPassword.toString()
     return decryptedPassword
 }
 
