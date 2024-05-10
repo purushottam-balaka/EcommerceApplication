@@ -47,6 +47,14 @@ type paymentOutput{
     paymentAmount:Int
     orderId:Int
 }
+type singleItemOrderOutput{
+    isSuccess:Boolean
+    message:String
+    name:String
+    data:order
+    errData:[product]
+    errMsg:String
+}
 extend type Mutation{
     add_customer(input : addCustInput!):Customer
     verifyingUserLogin(input : userLoginInput!):userLogin
@@ -54,6 +62,10 @@ extend type Mutation{
     delete_customer(input : deleteCustInput!):deleteCustomer
     createNewOrder(input : createOrderInput!):createOrder
     makePayment(input : paymentInput!):paymentOutput
+    singleItemOrderFromCart(input:singleItemOrderInput) : singleItemOrderOutput
+}
+input singleItemOrderInput{
+    id:Int
 }
 input paymentInput{
     id:Int

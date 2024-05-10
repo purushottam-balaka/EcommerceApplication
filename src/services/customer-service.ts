@@ -6,8 +6,8 @@ import { Order } from "../entity/order-model";
 import { Product } from "../entity/product-model";
 import { OrderItem } from "../entity/orderItem-model";
 import { Payment } from "../entity/payment-model";
-import { FindOptionsUtils } from "typeorm";
-import { prototype } from "events";
+// import { And, FindOptionsUtils } from "typeorm";
+import { Cart } from "../entity/cart-model";
 
 
 
@@ -17,6 +17,8 @@ const custRepo= AppDataSource.getRepository(Customer)
 const prodRepo=AppDataSource.getRepository(Product)
 const orderItemRepo=AppDataSource.getRepository(OrderItem)
 const paymentRepo=AppDataSource.getRepository(Payment)
+const cartRepo= AppDataSource.getRepository(Cart)
+
 export class CustomerService{
         public getCustomerDetails=async(id)=>{
                         try{    
@@ -63,7 +65,7 @@ public add_new_customer=async(FirstName,LastName,City,Country, Phone,Password,Pr
 
 public userLogin=async(primaryNumber, passowrd)=>{
         try{    
-                infologger.info('Login block executed')
+                // infologger.info('Login block executed')
                 const user=await custRepo.findOneBy({primaryNumber:primaryNumber})
                 if(user){
                         const hashed=user.password
@@ -96,7 +98,8 @@ public updateCustomer=async(id,FirstName,LastName,City,Country, Phone)=>{
                 }
                 return {msg:"User not found"}
         }catch(err){
-                errorLogger.error(err)
+                // errorLogger.error(err)
+                console.log(err)
         }
 }
 
@@ -129,30 +132,39 @@ public orderDeatils=async(primaryNumber)=>{
 }
 
 public createOrder=async(args)=>{
-        try{    
-                // console.log('args', args)
+        try{    console.log('args', args)
                 const itemsFound=[]
                 const itemsNotFound=[]
                 // var totalAmount=0
                 const customer = await custRepo.findOneBy({primaryNumber:args.customer.primaryNumber})
                 if (customer){
-                        // console.log('customer',customer)
-                        const lastOrder=await orderRepo.findOne({ relations:['customerId'],where:{customerId:customer.id},order:{id:'DESC'}}as any)
-                        // console.log('last Order',lastOrder)
+                        // var lastOrder=await orderRepo.findOne({ relations:['customerId'],
+                                // where:{customerId:customer.id },
+                                // order:{id:'DESC'}}
+                                // );
+                        const orderTableItems=await orderRepo.find({relations:['customerId'],})
+                        for (var  data of orderTableItems.reverse()){
+                                if (data.customerId.id==customer.id as any ){
+                                        var lastOrder=data
+                                        break
+                                }
+                        }
                         for (let ele in args.product)
                                 if(args.product.hasOwnProperty(ele)){
-                                        var value=args.product[ele]
-                                const item=await prodRepo.findOneBy({productName:value.productName as any})
-                                if(item)
-                                        itemsFound.push(value)
+                                        var orderItem=args.product[ele]
+                                        // console.log('orderItem',orderElem)
+                                        const productItem=await prodRepo.findOneBy({productName:orderItem.productName as any})
+                                        if(orderItem.quantity<=productItem.availableQuantitiy && productItem.isDiscontinued==false){
+                                        itemsFound.push(orderItem)
+                                        }
                                 else
-                                        itemsNotFound.push(value)
+                                        itemsNotFound.push(orderItem)
                         }
                         if(itemsNotFound.length==args.product.length){
                                         return {isSuccess:false,errMsg:'Sorry,Items not avilable,Order failed', errData:itemsNotFound}
                         }
                         if(itemsFound.length>0){
-                                if(lastOrder.isActive==false){
+                                if(!lastOrder || lastOrder.isActive==false){
                                         var orderElem= { } as Order
                                         orderElem.customerId=customer.id as any
                                         orderElem.orderDate=new Date()
@@ -168,13 +180,17 @@ public createOrder=async(args)=>{
                                orderItemElem.orderId=savedOrder.id as any
                                orderItemElem.productId=product.id as any
                                orderItemElem.unitPrice=product.unitPrice
-                               orderItemElem.quantity=item.quantity
+                        //        if(product.isDiscontinued==true){
+                        //                 return { isSuccess:false, errMsg:'Sorry, Requested product is not available',name:args.customer.firstName,data:savedOrder,errData:itemsNotFound   }         
+                        //        }
+
+                                product.availableQuantitiy=product.availableQuantitiy-item.quantity
+                                await prodRepo.save(product)
+                                orderItemElem.quantity=item.quantity
                                await orderItemRepo.save(orderItemElem)
                                totalAmount=totalAmount+(product.unitPrice*item.quantity)
                                 }
-                                console.log('toatl amount',totalAmount)
                                 savedOrder.totalAmount = totalAmount 
-                                // console.log('orderElem',orderElem.totalAmount)
                                 const updateOrder=await orderRepo.save(savedOrder)
                         }
                         if(itemsFound.length==args.product.length)
@@ -192,7 +208,6 @@ public createOrder=async(args)=>{
 public makeNewPayment=async(args)=>{
         try{    
                 const payment=await paymentRepo.findOne({relations:['orderId'], where:{id:args.id}}as any)
-                console.log('payment',payment)
                 const orderItem=await orderRepo.findOneBy({id:payment.orderId.id})
                 if(!payment)   
                         return {msg:'Payment is not found'}
@@ -208,5 +223,20 @@ public makeNewPayment=async(args)=>{
         }
 }
 
+public singleItemOrder=async(args)=>{
+        try{    
+                // const product=[]
+                // const cartItem=await cartRepo.find({relations:['customerId', 'productId'],where:{id:args.id } }as any)
+                // console.log('cartItem', cartItem)
+                // for (var ele of cartItem){
+                //         product.push(ele.productId)
+                // }
+                // const customer=ele.customerId
+                // return {customer,product}
+        }catch(err){
+                console.log(err)
+        }
+        }
 
 }
+

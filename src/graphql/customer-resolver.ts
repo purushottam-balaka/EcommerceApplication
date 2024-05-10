@@ -47,6 +47,12 @@ export const customerResolver={
             const user = new CustomerService()
             const data= await user.makeNewPayment(args.input)
             return data
+        }, 
+        singleItemOrderFromCart:async(_, args)=>{
+            const user=new CustomerService()
+            const data= await user.singleItemOrder(args.input)
+            const createOrder=await user.createOrder(data)
+            return createOrder
         }
         
     }
