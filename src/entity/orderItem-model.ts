@@ -20,6 +20,7 @@ export class OrderItem{
     @ManyToOne(type =>Product)
     @JoinColumn({name:'productId'})
     productId:Product   
+
 }
 
 

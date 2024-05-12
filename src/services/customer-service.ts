@@ -132,7 +132,8 @@ public orderDeatils=async(primaryNumber)=>{
 }
 
 public createOrder=async(args)=>{
-        try{    console.log('args', args)
+        try{    
+                console.log('args', args)
                 const itemsFound=[]
                 const itemsNotFound=[]
                 // var totalAmount=0
@@ -143,23 +144,28 @@ public createOrder=async(args)=>{
                                 // order:{id:'DESC'}}
                                 // );
                         const orderTableItems=await orderRepo.find({relations:['customerId'],})
+                        // console.log('orderTableItems', orderTableItems)
                         for (var  data of orderTableItems.reverse()){
                                 if (data.customerId.id==customer.id as any ){
                                         var lastOrder=data
+                                        console.log('customerid',data.customerId.id,customer.id)
                                         break
                                 }
                         }
-                        for (let ele in args.product)
-                                if(args.product.hasOwnProperty(ele)){
-                                        var orderItem=args.product[ele]
-                                        // console.log('orderItem',orderElem)
+                        // for (let ele in args.product){
+                        // //         if(args.product.hasOwnProperty(ele)){
+                        //                 var orderItem=args.product[ele]
+                        for(let ele of args.product) {    
+                                        var orderItem=ele
+                                        console.log('orderItem',orderItem)
                                         const productItem=await prodRepo.findOneBy({productName:orderItem.productName as any})
-                                        if(orderItem.quantity<=productItem.availableQuantitiy && productItem.isDiscontinued==false){
-                                        itemsFound.push(orderItem)
-                                        }
-                                else
-                                        itemsNotFound.push(orderItem)
-                        }
+                                                if(orderItem.quantity<=(productItem.availableQuantitiy-orderItem.quantity )&& productItem.isDiscontinued==false){
+                                                itemsFound.push(orderItem)
+                                                }
+                                        else{
+                                                itemsNotFound.push(orderItem)
+                                                }
+                                }
                         if(itemsNotFound.length==args.product.length){
                                         return {isSuccess:false,errMsg:'Sorry,Items not avilable,Order failed', errData:itemsNotFound}
                         }
@@ -199,6 +205,7 @@ public createOrder=async(args)=>{
                         return { isSuccess:true, message:'Partial Order created successfully,Someitems are not avilable',name:args.customer.firstName,data:savedOrder,errData:itemsNotFound   }        
                 }else
                         return { isSuccess:false,errMsg:'Sorry,User not found',name:args.customer.firstName  }
+        
         }catch(err){
                 console.log(err)
         
@@ -225,18 +232,49 @@ public makeNewPayment=async(args)=>{
 
 public singleItemOrder=async(args)=>{
         try{    
-                // const product=[]
-                // const cartItem=await cartRepo.find({relations:['customerId', 'productId'],where:{id:args.id } }as any)
+                const product=[]
+                const cartItem=await cartRepo.find({relations:['customerId', 'productId'],where:{id:args.id } }as any)
                 // console.log('cartItem', cartItem)
-                // for (var ele of cartItem){
-                //         product.push(ele.productId)
-                // }
-                // const customer=ele.customerId
-                // return {customer,product}
+                
+                for (var ele of cartItem){
+                        const productInput={
+                                productName:ele.productId.productName,
+                                package:ele.productId.package,
+                                isDiscontinued:ele.productId.isDiscontinued,
+                                quantity:ele.quantity
+                        }
+                        product.push(productInput)
+                        var customer=ele.customerId
+                }
+                //remove the placed Orer item from cart
+                return {customer,product}
         }catch(err){
                 console.log(err)
         }
+}
+public allItemsOrder=async(args)=>{
+        try{    
+                // console.log('args', args.id)
+                const product=[]
+                const cartItems=await cartRepo.find({relations:['customerId','productId']} )
+                for(var i of cartItems){
+                        if (i.customerId.id==args.id){
+                                const productInput={
+                                        productName:i.productId.productName,
+                                        package:i.productId.package,
+                                        isDiscontinued:i.productId.isDiscontinued,
+                                        quantity:i.quantity
+                                }
+                                product.push(productInput)
+                                var customer=i.customerId
+                        }
+                }
+                // console.log('allItems', userCartItems)
+                return {customer,product}
+        }catch(err){
+                console.log(err)
         }
+}
 
 }
 

@@ -329,35 +329,6 @@ type Customer implements Node {
   country: String
   primaryNumber: Int!
 
-  """Reads and enables pagination through a set of `Order`."""
-  ordersByCustomerId(
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """The method to use when ordering `Order`."""
-    orderBy: [OrdersOrderBy!] = [PRIMARY_KEY_ASC]
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: OrderCondition
-  ): OrdersConnection!
-
   """Reads and enables pagination through a set of `Payment`."""
   paymentsByCustomerId(
     """Only read the first `n` values of the set."""
@@ -415,41 +386,9 @@ type Customer implements Node {
     """
     condition: CartCondition
   ): CartsConnection!
-}
 
-"""A connection to a list of `Order` values."""
-type OrdersConnection {
-  """A list of `Order` objects."""
-  nodes: [Order]!
-
-  """
-  A list of edges which contains the `Order` and cursor to aid in pagination.
-  """
-  edges: [OrdersEdge!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `Order` you could get from the connection."""
-  totalCount: Int!
-}
-
-type Order implements Node {
-  """
-  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
-  """
-  nodeId: ID!
-  id: Int!
-  orderDate: Datetime
-  totalAmount: Int
-  customerId: Int
-  isActive: Boolean
-
-  """Reads a single `Customer` that is related to this `Order`."""
-  customerByCustomerId: Customer
-
-  """Reads and enables pagination through a set of `OrderItem`."""
-  orderItemsByOrderId(
+  """Reads and enables pagination through a set of `Order`."""
+  ordersByCustomerId(
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -468,14 +407,72 @@ type Order implements Node {
     """Read all values in the set after (below) this cursor."""
     after: Cursor
 
-    """The method to use when ordering `OrderItem`."""
-    orderBy: [OrderItemsOrderBy!] = [PRIMARY_KEY_ASC]
+    """The method to use when ordering `Order`."""
+    orderBy: [OrdersOrderBy!] = [PRIMARY_KEY_ASC]
 
     """
     A condition to be used in determining which values should be returned by the collection.
     """
-    condition: OrderItemCondition
-  ): OrderItemsConnection!
+    condition: OrderCondition
+  ): OrdersConnection!
+}
+
+"""A connection to a list of `Payment` values."""
+type PaymentsConnection {
+  """A list of `Payment` objects."""
+  nodes: [Payment]!
+
+  """
+  A list of edges which contains the `Payment` and cursor to aid in pagination.
+  """
+  edges: [PaymentsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Payment` you could get from the connection."""
+  totalCount: Int!
+}
+
+type Payment implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: Int!
+  paymentType: String!
+  isPaymentActive: Boolean!
+  paymentAmount: Int!
+  paymentDate: Datetime!
+  customerId: Int
+  orderId: Int
+
+  """Reads a single `Customer` that is related to this `Payment`."""
+  customerByCustomerId: Customer
+
+  """Reads a single `Order` that is related to this `Payment`."""
+  orderByOrderId: Order
+}
+
+"""
+A point in time as described by the [ISO
+8601](https://en.wikipedia.org/wiki/ISO_8601) standard. May or may not include a timezone.
+"""
+scalar Datetime
+
+type Order implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: Int!
+  orderDate: Datetime
+  totalAmount: Int
+  isActive: Boolean
+  customerId: Int
+
+  """Reads a single `Customer` that is related to this `Order`."""
+  customerByCustomerId: Customer
 
   """Reads a single `Payment` that is related to this `Order`."""
   paymentByOrderId: Payment
@@ -508,13 +505,86 @@ type Order implements Node {
     """
     condition: PaymentCondition
   ): PaymentsConnection! @deprecated(reason: "Please use paymentByOrderId instead")
+
+  """Reads and enables pagination through a set of `OrderItem`."""
+  orderItemsByOrderId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `OrderItem`."""
+    orderBy: [OrderItemsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: OrderItemCondition
+  ): OrderItemsConnection!
+}
+
+"""A location in a connection that can be used for resuming pagination."""
+scalar Cursor
+
+"""Methods to use when ordering `Payment`."""
+enum PaymentsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  PAYMENT_TYPE_ASC
+  PAYMENT_TYPE_DESC
+  IS_PAYMENT_ACTIVE_ASC
+  IS_PAYMENT_ACTIVE_DESC
+  PAYMENT_AMOUNT_ASC
+  PAYMENT_AMOUNT_DESC
+  PAYMENT_DATE_ASC
+  PAYMENT_DATE_DESC
+  CUSTOMER_ID_ASC
+  CUSTOMER_ID_DESC
+  ORDER_ID_ASC
+  ORDER_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
 }
 
 """
-A point in time as described by the [ISO
-8601](https://en.wikipedia.org/wiki/ISO_8601) standard. May or may not include a timezone.
+A condition to be used against `Payment` object types. All fields are tested for equality and combined with a logical ‘and.’
 """
-scalar Datetime
+input PaymentCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+
+  """Checks for equality with the object’s `paymentType` field."""
+  paymentType: String
+
+  """Checks for equality with the object’s `isPaymentActive` field."""
+  isPaymentActive: Boolean
+
+  """Checks for equality with the object’s `paymentAmount` field."""
+  paymentAmount: Int
+
+  """Checks for equality with the object’s `paymentDate` field."""
+  paymentDate: Datetime
+
+  """Checks for equality with the object’s `customerId` field."""
+  customerId: Int
+
+  """Checks for equality with the object’s `orderId` field."""
+  orderId: Int
+}
 
 """A connection to a list of `OrderItem` values."""
 type OrderItemsConnection {
@@ -592,35 +662,6 @@ type Product implements Node {
     condition: SupplierCondition
   ): SuppliersConnection!
 
-  """Reads and enables pagination through a set of `OrderItem`."""
-  orderItemsByProductId(
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """The method to use when ordering `OrderItem`."""
-    orderBy: [OrderItemsOrderBy!] = [PRIMARY_KEY_ASC]
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: OrderItemCondition
-  ): OrderItemsConnection!
-
   """Reads and enables pagination through a set of `Cart`."""
   cartsByProductId(
     """Only read the first `n` values of the set."""
@@ -649,6 +690,35 @@ type Product implements Node {
     """
     condition: CartCondition
   ): CartsConnection!
+
+  """Reads and enables pagination through a set of `OrderItem`."""
+  orderItemsByProductId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `OrderItem`."""
+    orderBy: [OrderItemsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: OrderItemCondition
+  ): OrderItemsConnection!
 }
 
 """A connection to a list of `Supplier` values."""
@@ -694,9 +764,6 @@ type SuppliersEdge {
   """The `Supplier` at the end of the edge."""
   node: Supplier
 }
-
-"""A location in a connection that can be used for resuming pagination."""
-scalar Cursor
 
 """Information about pagination in a connection."""
 type PageInfo {
@@ -766,6 +833,38 @@ input SupplierCondition {
   productId: Int
 }
 
+"""Methods to use when ordering `Cart`."""
+enum CartsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  QUANTITY_ASC
+  QUANTITY_DESC
+  CUSTOMER_ID_ASC
+  CUSTOMER_ID_DESC
+  PRODUCT_ID_ASC
+  PRODUCT_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A condition to be used against `Cart` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input CartCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+
+  """Checks for equality with the object’s `quantity` field."""
+  quantity: Int
+
+  """Checks for equality with the object’s `customerId` field."""
+  customerId: Int
+
+  """Checks for equality with the object’s `productId` field."""
+  productId: Int
+}
+
 """Methods to use when ordering `OrderItem`."""
 enum OrderItemsOrderBy {
   NATURAL
@@ -804,38 +903,6 @@ input OrderItemCondition {
   productId: Int
 }
 
-"""Methods to use when ordering `Cart`."""
-enum CartsOrderBy {
-  NATURAL
-  ID_ASC
-  ID_DESC
-  QUANTITY_ASC
-  QUANTITY_DESC
-  CUSTOMER_ID_ASC
-  CUSTOMER_ID_DESC
-  PRODUCT_ID_ASC
-  PRODUCT_ID_DESC
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
-}
-
-"""
-A condition to be used against `Cart` object types. All fields are tested for equality and combined with a logical ‘and.’
-"""
-input CartCondition {
-  """Checks for equality with the object’s `id` field."""
-  id: Int
-
-  """Checks for equality with the object’s `quantity` field."""
-  quantity: Int
-
-  """Checks for equality with the object’s `customerId` field."""
-  customerId: Int
-
-  """Checks for equality with the object’s `productId` field."""
-  productId: Int
-}
-
 """A `OrderItem` edge in the connection."""
 type OrderItemsEdge {
   """A cursor for use in pagination."""
@@ -843,43 +910,6 @@ type OrderItemsEdge {
 
   """The `OrderItem` at the end of the edge."""
   node: OrderItem
-}
-
-type Payment implements Node {
-  """
-  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
-  """
-  nodeId: ID!
-  id: Int!
-  paymentType: String!
-  isPaymentActive: Boolean!
-  paymentAmount: Int!
-  paymentDate: Datetime!
-  customerId: Int
-  orderId: Int
-
-  """Reads a single `Customer` that is related to this `Payment`."""
-  customerByCustomerId: Customer
-
-  """Reads a single `Order` that is related to this `Payment`."""
-  orderByOrderId: Order
-}
-
-"""A connection to a list of `Payment` values."""
-type PaymentsConnection {
-  """A list of `Payment` objects."""
-  nodes: [Payment]!
-
-  """
-  A list of edges which contains the `Payment` and cursor to aid in pagination.
-  """
-  edges: [PaymentsEdge!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `Payment` you could get from the connection."""
-  totalCount: Int!
 }
 
 """A `Payment` edge in the connection."""
@@ -891,51 +921,21 @@ type PaymentsEdge {
   node: Payment
 }
 
-"""Methods to use when ordering `Payment`."""
-enum PaymentsOrderBy {
-  NATURAL
-  ID_ASC
-  ID_DESC
-  PAYMENT_TYPE_ASC
-  PAYMENT_TYPE_DESC
-  IS_PAYMENT_ACTIVE_ASC
-  IS_PAYMENT_ACTIVE_DESC
-  PAYMENT_AMOUNT_ASC
-  PAYMENT_AMOUNT_DESC
-  PAYMENT_DATE_ASC
-  PAYMENT_DATE_DESC
-  CUSTOMER_ID_ASC
-  CUSTOMER_ID_DESC
-  ORDER_ID_ASC
-  ORDER_ID_DESC
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
-}
+"""A connection to a list of `Order` values."""
+type OrdersConnection {
+  """A list of `Order` objects."""
+  nodes: [Order]!
 
-"""
-A condition to be used against `Payment` object types. All fields are tested for equality and combined with a logical ‘and.’
-"""
-input PaymentCondition {
-  """Checks for equality with the object’s `id` field."""
-  id: Int
+  """
+  A list of edges which contains the `Order` and cursor to aid in pagination.
+  """
+  edges: [OrdersEdge!]!
 
-  """Checks for equality with the object’s `paymentType` field."""
-  paymentType: String
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
 
-  """Checks for equality with the object’s `isPaymentActive` field."""
-  isPaymentActive: Boolean
-
-  """Checks for equality with the object’s `paymentAmount` field."""
-  paymentAmount: Int
-
-  """Checks for equality with the object’s `paymentDate` field."""
-  paymentDate: Datetime
-
-  """Checks for equality with the object’s `customerId` field."""
-  customerId: Int
-
-  """Checks for equality with the object’s `orderId` field."""
-  orderId: Int
+  """The count of *all* `Order` you could get from the connection."""
+  totalCount: Int!
 }
 
 """A `Order` edge in the connection."""
@@ -956,10 +956,10 @@ enum OrdersOrderBy {
   ORDER_DATE_DESC
   TOTAL_AMOUNT_ASC
   TOTAL_AMOUNT_DESC
-  CUSTOMER_ID_ASC
-  CUSTOMER_ID_DESC
   IS_ACTIVE_ASC
   IS_ACTIVE_DESC
+  CUSTOMER_ID_ASC
+  CUSTOMER_ID_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
 }
@@ -977,11 +977,11 @@ input OrderCondition {
   """Checks for equality with the object’s `totalAmount` field."""
   totalAmount: Int
 
-  """Checks for equality with the object’s `customerId` field."""
-  customerId: Int
-
   """Checks for equality with the object’s `isActive` field."""
   isActive: Boolean
+
+  """Checks for equality with the object’s `customerId` field."""
+  customerId: Int
 }
 
 """A `Cart` edge in the connection."""
@@ -1500,6 +1500,12 @@ type Mutation {
     """
     input: singleItemOrderInput
   ): singleItemOrderOutput
+  allItemsOrderFromCart(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: allItemsOrderInput
+  ): allItemsOrderOutput
 }
 
 """The output of our create `Cart` mutation."""
@@ -1640,8 +1646,8 @@ input OrderInput {
   id: Int
   orderDate: Datetime
   totalAmount: Int
-  customerId: Int
   isActive: Boolean
+  customerId: Int
 }
 
 """The output of our create `OrderItem` mutation."""
@@ -2049,8 +2055,8 @@ input OrderPatch {
   id: Int
   orderDate: Datetime
   totalAmount: Int
-  customerId: Int
   isActive: Boolean
+  customerId: Int
 }
 
 """All input for the `updateOrderById` mutation."""
@@ -2866,5 +2872,18 @@ type singleItemOrderOutput {
 }
 
 input singleItemOrderInput {
+  id: Int
+}
+
+type allItemsOrderOutput {
+  isSuccess: Boolean
+  message: String
+  name: String
+  data: order
+  errData: [product]
+  errMsg: String
+}
+
+input allItemsOrderInput {
   id: Int
 }

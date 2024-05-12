@@ -55,6 +55,15 @@ type singleItemOrderOutput{
     errData:[product]
     errMsg:String
 }
+type allItemsOrderOutput{
+    isSuccess:Boolean
+    message:String
+    name:String
+    data:order
+    errData:[product]
+    errMsg:String
+}
+
 extend type Mutation{
     add_customer(input : addCustInput!):Customer
     verifyingUserLogin(input : userLoginInput!):userLogin
@@ -63,6 +72,10 @@ extend type Mutation{
     createNewOrder(input : createOrderInput!):createOrder
     makePayment(input : paymentInput!):paymentOutput
     singleItemOrderFromCart(input:singleItemOrderInput) : singleItemOrderOutput
+    allItemsOrderFromCart(input:allItemsOrderInput) : allItemsOrderOutput
+}
+input allItemsOrderInput{
+    id:Int
 }
 input singleItemOrderInput{
     id:Int

@@ -1,4 +1,5 @@
 // import  {getCustomerDetails,add_new_customer,updateCustomer, deleteCustomer}  from "../services/customer";
+import { create } from "domain"
 import { CustomerService } from "../services/customer-service"
 export const customerResolver={
     Query:{
@@ -52,6 +53,12 @@ export const customerResolver={
             const user=new CustomerService()
             const data= await user.singleItemOrder(args.input)
             const createOrder=await user.createOrder(data)
+            return createOrder
+        },
+        allItemsOrderFromCart:async(_,args)=>{
+            const user=new CustomerService()
+            const data= await user.allItemsOrder(args.input)
+            const createOrder= await user.createOrder(data)
             return createOrder
         }
         
