@@ -133,7 +133,7 @@ public orderDeatils=async(primaryNumber)=>{
 
 public createOrder=async(args)=>{
         try{    
-                console.log('args', args)
+                // console.log('args', args)
                 const itemsFound=[]
                 const itemsNotFound=[]
                 // var totalAmount=0
@@ -148,13 +148,13 @@ public createOrder=async(args)=>{
                         for (var  data of orderTableItems.reverse()){
                                 if (data.customerId.id==customer.id as any ){
                                         var lastOrder=data
-                                        console.log('customerid',data.customerId.id,customer.id)
+                                        // console.log('customerid',data.customerId.id,customer.id)
                                         break
                                 }
                         }
                         // for (let ele in args.product){
-                        // //         if(args.product.hasOwnProperty(ele)){
-                        //                 var orderItem=args.product[ele]
+                                // if(args.product.hasOwnProperty(ele)){
+                                //         var orderItem=args.product[ele]
                         for(let ele of args.product) {    
                                         var orderItem=ele
                                         console.log('orderItem',orderItem)
@@ -165,7 +165,8 @@ public createOrder=async(args)=>{
                                         else{
                                                 itemsNotFound.push(orderItem)
                                                 }
-                                }
+                                // }
+                        }
                         if(itemsNotFound.length==args.product.length){
                                         return {isSuccess:false,errMsg:'Sorry,Items not avilable,Order failed', errData:itemsNotFound}
                         }
