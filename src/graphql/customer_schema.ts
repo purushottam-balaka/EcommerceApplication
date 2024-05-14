@@ -28,7 +28,6 @@ type product{
     quantity:Int
 }
 type order{
-    customerId:Int
     orderDate:Date
     totalAmount:Int
     id:Int
@@ -37,10 +36,11 @@ type createOrder{
     isSuccess:Boolean
     message:String
     name:String
-    data:order
+    data:[product]
     errData:[product]
     errMsg:String
-
+    customerId:Int
+    ordInfo:order
 }
 type paymentOutput{
     msg:String
@@ -51,17 +51,21 @@ type singleItemOrderOutput{
     isSuccess:Boolean
     message:String
     name:String
-    data:order
+    data:[product]
     errData:[product]
     errMsg:String
+    customerId:Int
+    ordInfo:order
 }
 type allItemsOrderOutput{
     isSuccess:Boolean
     message:String
     name:String
-    data:order
+    data:[product]
     errData:[product]
     errMsg:String
+    customerId:Int
+    ordInfo:order
 }
 
 extend type Mutation{
@@ -75,10 +79,10 @@ extend type Mutation{
     allItemsOrderFromCart(input:allItemsOrderInput) : allItemsOrderOutput
 }
 input allItemsOrderInput{
-    id:Int
+    customerId:Int
 }
 input singleItemOrderInput{
-    id:Int
+    cartItemId:Int
 }
 input paymentInput{
     id:Int

@@ -8,6 +8,7 @@ import { OrderItem } from "../entity/orderItem-model";
 import { Payment } from "../entity/payment-model";
 // import { And, FindOptionsUtils } from "typeorm";
 import { Cart } from "../entity/cart-model";
+import { response } from "express";
 
 
 
@@ -133,41 +134,33 @@ public orderDeatils=async(primaryNumber)=>{
 
 public createOrder=async(args)=>{
         try{    
-                // console.log('args', args)
                 const itemsFound=[]
                 const itemsNotFound=[]
-                // var totalAmount=0
                 const customer = await custRepo.findOneBy({primaryNumber:args.customer.primaryNumber})
                 if (customer){
-                        // var lastOrder=await orderRepo.findOne({ relations:['customerId'],
-                                // where:{customerId:customer.id },
-                                // order:{id:'DESC'}}
-                                // );
-                        const orderTableItems=await orderRepo.find({relations:['customerId'],})
-                        // console.log('orderTableItems', orderTableItems)
-                        for (var  data of orderTableItems.reverse()){
+                        const orderTableItems=await orderRepo.find({relations:['customerId'],order:{id:'ASC'}} as any)
+                        for (var  data of orderTableItems.reverse()){                     
                                 if (data.customerId.id==customer.id as any ){
                                         var lastOrder=data
-                                        // console.log('customerid',data.customerId.id,customer.id)
                                         break
                                 }
                         }
-                        // for (let ele in args.product){
-                                // if(args.product.hasOwnProperty(ele)){
-                                //         var orderItem=args.product[ele]
                         for(let ele of args.product) {    
                                         var orderItem=ele
-                                        console.log('orderItem',orderItem)
+                                        
                                         const productItem=await prodRepo.findOneBy({productName:orderItem.productName as any})
-                                                if(orderItem.quantity<=(productItem.availableQuantitiy-orderItem.quantity )&& productItem.isDiscontinued==false){
-                                                itemsFound.push(orderItem)
+                                                if(productItem){
+                                                        if((productItem.availableQuantitiy-orderItem.quantity ) >= 0  && productItem.isDiscontinued==false){
+                                                                itemsFound.push(orderItem)
+                                                        }else{
+                                                                itemsNotFound.push(orderItem)     
+                                                        }
                                                 }
-                                        else{
+                                                else{
                                                 itemsNotFound.push(orderItem)
                                                 }
-                                // }
                         }
-                        if(itemsNotFound.length==args.product.length){
+                        if(itemsNotFound.length==args.product.length  ){
                                         return {isSuccess:false,errMsg:'Sorry,Items not avilable,Order failed', errData:itemsNotFound}
                         }
                         if(itemsFound.length>0){
@@ -187,25 +180,24 @@ public createOrder=async(args)=>{
                                orderItemElem.orderId=savedOrder.id as any
                                orderItemElem.productId=product.id as any
                                orderItemElem.unitPrice=product.unitPrice
-                        //        if(product.isDiscontinued==true){
-                        //                 return { isSuccess:false, errMsg:'Sorry, Requested product is not available',name:args.customer.firstName,data:savedOrder,errData:itemsNotFound   }         
-                        //        }
-
                                 product.availableQuantitiy=product.availableQuantitiy-item.quantity
                                 await prodRepo.save(product)
                                 orderItemElem.quantity=item.quantity
-                               await orderItemRepo.save(orderItemElem)
-                               totalAmount=totalAmount+(product.unitPrice*item.quantity)
+                                await orderItemRepo.save(orderItemElem)
+                                totalAmount=totalAmount+(product.unitPrice*item.quantity)
+                                if(item.cartItemId){
+                                await cartRepo.delete({id:item.cartItemId})
+                                }
                                 }
                                 savedOrder.totalAmount = totalAmount 
-                                const updateOrder=await orderRepo.save(savedOrder)
+                                var resp=await orderRepo.save(savedOrder)
                         }
                         if(itemsFound.length==args.product.length)
-                                return { isSuccess:true, message:'Order created successfully',name:args.customer.firstName,data:savedOrder   }
+                                return { isSuccess:true, message:'Order created successfully',name:customer.firstName,data:itemsFound,customerId:customer.id, ordInfo:resp }
                         else
-                        return { isSuccess:true, message:'Partial Order created successfully,Someitems are not avilable',name:args.customer.firstName,data:savedOrder,errData:itemsNotFound   }        
+                        return { isSuccess:true, message:'Partial Order created successfully,Someitems are not avilable',name:customer.firstName,data:itemsFound,errData:itemsNotFound, customerId:customer.id, ordInfo:resp }        
                 }else
-                        return { isSuccess:false,errMsg:'Sorry,User not found',name:args.customer.firstName  }
+                        return { isSuccess:false,errMsg:'Sorry,User not found'  }
         
         }catch(err){
                 console.log(err)
@@ -233,12 +225,12 @@ public makeNewPayment=async(args)=>{
 
 public singleItemOrder=async(args)=>{
         try{    
+                // console.log('args',args)
                 const product=[]
-                const cartItem=await cartRepo.find({relations:['customerId', 'productId'],where:{id:args.id } }as any)
-                // console.log('cartItem', cartItem)
-                
+                const cartItem=await cartRepo.find({relations:['customerId', 'productId'],where:{id:args.cartItemId} }as any)        
                 for (var ele of cartItem){
                         const productInput={
+                                cartItemId:ele.id,
                                 productName:ele.productId.productName,
                                 package:ele.productId.package,
                                 isDiscontinued:ele.productId.isDiscontinued,
@@ -255,12 +247,12 @@ public singleItemOrder=async(args)=>{
 }
 public allItemsOrder=async(args)=>{
         try{    
-                // console.log('args', args.id)
                 const product=[]
                 const cartItems=await cartRepo.find({relations:['customerId','productId']} )
                 for(var i of cartItems){
-                        if (i.customerId.id==args.id){
+                        if (i.customerId.id==args.customerId){
                                 const productInput={
+                                        cartItemId:i.id,
                                         productName:i.productId.productName,
                                         package:i.productId.package,
                                         isDiscontinued:i.productId.isDiscontinued,
@@ -270,7 +262,6 @@ public allItemsOrder=async(args)=>{
                                 var customer=i.customerId
                         }
                 }
-                // console.log('allItems', userCartItems)
                 return {customer,product}
         }catch(err){
                 console.log(err)

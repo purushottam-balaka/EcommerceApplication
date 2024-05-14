@@ -2810,20 +2810,12 @@ type createOrder {
   isSuccess: Boolean
   message: String
   name: String
-  data: order
+  data: [product]
   errData: [product]
   errMsg: String
-}
-
-type order {
   customerId: Int
-  orderDate: Date
-  totalAmount: Int
-  id: Int
+  ordInfo: order
 }
-
-"""The day, does not include a time."""
-scalar Date
 
 type product {
   productName: String
@@ -2831,6 +2823,15 @@ type product {
   isDiscontinued: Boolean
   quantity: Int
 }
+
+type order {
+  orderDate: Date
+  totalAmount: Int
+  id: Int
+}
+
+"""The day, does not include a time."""
+scalar Date
 
 input createOrderInput {
   customer: customerDataInput
@@ -2866,24 +2867,28 @@ type singleItemOrderOutput {
   isSuccess: Boolean
   message: String
   name: String
-  data: order
+  data: [product]
   errData: [product]
   errMsg: String
+  customerId: Int
+  ordInfo: order
 }
 
 input singleItemOrderInput {
-  id: Int
+  cartItemId: Int
 }
 
 type allItemsOrderOutput {
   isSuccess: Boolean
   message: String
   name: String
-  data: order
+  data: [product]
   errData: [product]
   errMsg: String
+  customerId: Int
+  ordInfo: order
 }
 
 input allItemsOrderInput {
-  id: Int
+  customerId: Int
 }
