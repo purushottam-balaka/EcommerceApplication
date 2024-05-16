@@ -16,6 +16,9 @@ export class Order{
     @Column({nullable:true})
     isActive:boolean
 
+    @Column({nullable:true})
+    status:string
+
     @ManyToOne(type=>Customer)
     @JoinColumn({name:'customerId'})
     customerId:Customer

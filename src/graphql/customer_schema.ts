@@ -1,11 +1,22 @@
 import { gql } from "postgraphile";
 export const Customer_schema=gql`
 extend type Query{
-    customerGet(input : customerInput!):[Customer!] 
-    getOrderDetails(input : getOrderInput!):[Order]
+    getCustomers(input : getCustomersInput!):[Customer] 
+    getOrderDetails(input : getOrderInput!):getOrderOutput
 }
-input customerInput{
+input getCustomersInput{
+    primaryNumber:Int
+}
+type getOrderOutput{
+    orders:[orderDetails]
+    msg:String
+}
+type orderDetails{
     id:Int
+    orderDate:Date
+    totalAmount:Int
+    isActive:Boolean
+    status:String
 }
 type getCustomerDetails{
     firstName:String
@@ -32,7 +43,7 @@ type order{
     totalAmount:Int
     id:Int
 }
-type createOrder{
+type createOrderOutput{
     isSuccess:Boolean
     message:String
     name:String
@@ -69,11 +80,11 @@ type allItemsOrderOutput{
 }
 
 extend type Mutation{
-    add_customer(input : addCustInput!):Customer
-    verifyingUserLogin(input : userLoginInput!):userLogin
-    update_customer(input : updateCustInput!):updateCustomer
-    delete_customer(input : deleteCustInput!):deleteCustomer
-    createNewOrder(input : createOrderInput!):createOrder
+    addCustomer(input : addCustInput!):Customer
+    loginCustomer(input : customerLoginInput!):userLoginOutput
+    update_customer(input : updateCustInput!):updateCustomerOutput
+    delete_customer(input : deleteCustInput!):deleteCustomerOutput
+    createNewOrder(input : createOrderInput!):createOrderOutput
     makePayment(input : paymentInput!):paymentOutput
     singleItemOrderFromCart(input:singleItemOrderInput) : singleItemOrderOutput
     allItemsOrderFromCart(input:allItemsOrderInput) : allItemsOrderOutput
@@ -85,7 +96,8 @@ input singleItemOrderInput{
     cartItemId:Int
 }
 input paymentInput{
-    id:Int
+    paymentId:Int
+    token:String
 }
 input createOrderInput{
     customer:customerDataInput
@@ -115,36 +127,35 @@ input productData{
 input getOrderInput{
     primaryNumber:Int!
 }
-input userLoginInput{
+input customerLoginInput{
     primaryNumber:Int!
     password:String!
 }
-type userLogin{
-    msg:String!
+type userLoginOutput{
+    token:String
+    msg:String
 }
 input deleteCustInput{
-    id:Int
+    primaryNumber:Int
 }
-type deleteCustomer{
+type deleteCustomerOutput{
     msg:String
 }
 input updateCustInput{
-    id:Int
     firstName:String
     lastName:String
     city: String
     country:String
-    phone:Int
+    primaryNumber:Int
 }
-type updateCustomer{
+type updateCustomerOutput{
     firstName:String
     lastName:String
     city: String
     country:String
-    phone:Int
-    id:Int
+    primaryNumber:Int
+    msg:String
 }
-
 
 
 `

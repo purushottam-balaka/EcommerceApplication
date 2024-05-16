@@ -1,11 +1,9 @@
-// import  {getCustomerDetails,add_new_customer,updateCustomer, deleteCustomer}  from "../services/customer";
-import { create } from "domain"
 import { CustomerService } from "../services/customer-service"
 export const customerResolver={
     Query:{
-        customerGet: async(_,args)=>{
+        getCustomers: async(_,args)=>{
             const user=new CustomerService()
-            const data=await user.getCustomerDetails(args.input.id)
+            const data=await user.getCustomerDetails(args.input.primaryNumber)
             return data
         },
         getOrderDetails: async(_,args)=>{
@@ -16,12 +14,12 @@ export const customerResolver={
     },
     Mutation:{
         
-        add_customer:async(_,args)=>{
+        addCustomer:async(_,args)=>{
             const user=new CustomerService()
-            const data= await user.add_new_customer(args.input.firstName,args.input.lastName,args.input.city,args.input.country, args.input.phone, args.input.password,args.input.primaryNumber)
+            const data= await user.addNewCustomer(args.input.firstName,args.input.lastName,args.input.city,args.input.country, args.input.password,args.input.primaryNumber)
             return data
         },
-        verifyingUserLogin:async(_,args)=>{
+        loginCustomer:async(_,args)=>{
             const user = new CustomerService()
             const data= await user.userLogin(args.input.primaryNumber, args.input.password)
             return data
@@ -29,13 +27,13 @@ export const customerResolver={
 
         update_customer:async(_,args)=>{
             const user=new CustomerService()
-            const data=await user.updateCustomer(args.input.id,args.input.firstName,args.input.lastName,args.input.city,args.input.country, args.input.phone)
+            const data=await user.updateCustomer(args.input.firstName,args.input.lastName,args.input.city,args.input.country, args.input.primaryNumber)
             return data
         },
 
         delete_customer:async(_, args)=>{
             const user=new CustomerService()
-            const data= await user.deleteCustomer(args.input.id)
+            const data= await user.deleteCustomer(args.input.primaryNumber)
             return data;
         },
         createNewOrder:async(_,args)=>{
@@ -46,7 +44,7 @@ export const customerResolver={
 
         makePayment:async(_,args)=>{
             const user = new CustomerService()
-            const data= await user.makeNewPayment(args.input)
+            const data= await user.makeNewPayment(args.input )
             return data
         }, 
         singleItemOrderFromCart:async(_, args)=>{

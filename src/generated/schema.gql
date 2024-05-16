@@ -46,6 +46,35 @@ type Query implements Node {
     condition: CartCondition
   ): CartsConnection
 
+  """Reads and enables pagination through a set of `Categeory`."""
+  allCategeories(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Categeory`."""
+    orderBy: [CategeoriesOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CategeoryCondition
+  ): CategeoriesConnection
+
   """Reads and enables pagination through a set of `Customer`."""
   allCustomers(
     """Only read the first `n` values of the set."""
@@ -220,6 +249,7 @@ type Query implements Node {
     condition: SupplierCondition
   ): SuppliersConnection
   cartById(id: Int!): Cart
+  categeoryById(id: Int!): Categeory
   customerById(id: Int!): Customer
   customerByPrimaryNumber(primaryNumber: Int!): Customer
   orderById(id: Int!): Order
@@ -234,6 +264,12 @@ type Query implements Node {
     """The globally unique `ID` to be used in selecting a single `Cart`."""
     nodeId: ID!
   ): Cart
+
+  """Reads a single `Categeory` using its globally unique `ID`."""
+  categeory(
+    """The globally unique `ID` to be used in selecting a single `Categeory`."""
+    nodeId: ID!
+  ): Categeory
 
   """Reads a single `Customer` using its globally unique `ID`."""
   customer(
@@ -270,8 +306,8 @@ type Query implements Node {
     """The globally unique `ID` to be used in selecting a single `Supplier`."""
     nodeId: ID!
   ): Supplier
-  customerGet(input: customerInput!): [Customer!]
-  getOrderDetails(input: getOrderInput!): [Order]
+  getCustomers(input: getCustomersInput!): [Customer]
+  getOrderDetails(input: getOrderInput!): getOrderOutput
 }
 
 """An object with a globally unique `ID`."""
@@ -470,6 +506,7 @@ type Order implements Node {
   totalAmount: Int
   isActive: Boolean
   customerId: Int
+  status: String
 
   """Reads a single `Customer` that is related to this `Order`."""
   customerByCustomerId: Customer
@@ -632,6 +669,10 @@ type Product implements Node {
   package: String!
   isDiscontinued: Boolean!
   availableQuantitiy: Int
+  categeoryId: Int
+
+  """Reads a single `Categeory` that is related to this `Product`."""
+  categeoryByCategeoryId: Categeory
 
   """Reads and enables pagination through a set of `Supplier`."""
   suppliersByProductId(
@@ -721,6 +762,134 @@ type Product implements Node {
   ): OrderItemsConnection!
 }
 
+type Categeory implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: Int!
+  name: String!
+  description: String
+  imageUrl: String
+
+  """Reads and enables pagination through a set of `Product`."""
+  productsByCategeoryId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Product`."""
+    orderBy: [ProductsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProductCondition
+  ): ProductsConnection!
+}
+
+"""A connection to a list of `Product` values."""
+type ProductsConnection {
+  """A list of `Product` objects."""
+  nodes: [Product]!
+
+  """
+  A list of edges which contains the `Product` and cursor to aid in pagination.
+  """
+  edges: [ProductsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Product` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Product` edge in the connection."""
+type ProductsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Product` at the end of the edge."""
+  node: Product
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: Cursor
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: Cursor
+}
+
+"""Methods to use when ordering `Product`."""
+enum ProductsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  PRODUCT_NAME_ASC
+  PRODUCT_NAME_DESC
+  UNIT_PRICE_ASC
+  UNIT_PRICE_DESC
+  PACKAGE_ASC
+  PACKAGE_DESC
+  IS_DISCONTINUED_ASC
+  IS_DISCONTINUED_DESC
+  AVAILABLE_QUANTITIY_ASC
+  AVAILABLE_QUANTITIY_DESC
+  CATEGEORY_ID_ASC
+  CATEGEORY_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A condition to be used against `Product` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input ProductCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+
+  """Checks for equality with the object’s `productName` field."""
+  productName: String
+
+  """Checks for equality with the object’s `unitPrice` field."""
+  unitPrice: Int
+
+  """Checks for equality with the object’s `package` field."""
+  package: String
+
+  """Checks for equality with the object’s `isDiscontinued` field."""
+  isDiscontinued: Boolean
+
+  """Checks for equality with the object’s `availableQuantitiy` field."""
+  availableQuantitiy: Int
+
+  """Checks for equality with the object’s `categeoryId` field."""
+  categeoryId: Int
+}
+
 """A connection to a list of `Supplier` values."""
 type SuppliersConnection {
   """A list of `Supplier` objects."""
@@ -763,21 +932,6 @@ type SuppliersEdge {
 
   """The `Supplier` at the end of the edge."""
   node: Supplier
-}
-
-"""Information about pagination in a connection."""
-type PageInfo {
-  """When paginating forwards, are there more items?"""
-  hasNextPage: Boolean!
-
-  """When paginating backwards, are there more items?"""
-  hasPreviousPage: Boolean!
-
-  """When paginating backwards, the cursor to continue."""
-  startCursor: Cursor
-
-  """When paginating forwards, the cursor to continue."""
-  endCursor: Cursor
 }
 
 """Methods to use when ordering `Supplier`."""
@@ -960,6 +1114,8 @@ enum OrdersOrderBy {
   IS_ACTIVE_DESC
   CUSTOMER_ID_ASC
   CUSTOMER_ID_DESC
+  STATUS_ASC
+  STATUS_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
 }
@@ -982,6 +1138,9 @@ input OrderCondition {
 
   """Checks for equality with the object’s `customerId` field."""
   customerId: Int
+
+  """Checks for equality with the object’s `status` field."""
+  status: String
 }
 
 """A `Cart` edge in the connection."""
@@ -991,6 +1150,65 @@ type CartsEdge {
 
   """The `Cart` at the end of the edge."""
   node: Cart
+}
+
+"""A connection to a list of `Categeory` values."""
+type CategeoriesConnection {
+  """A list of `Categeory` objects."""
+  nodes: [Categeory]!
+
+  """
+  A list of edges which contains the `Categeory` and cursor to aid in pagination.
+  """
+  edges: [CategeoriesEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Categeory` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Categeory` edge in the connection."""
+type CategeoriesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Categeory` at the end of the edge."""
+  node: Categeory
+}
+
+"""Methods to use when ordering `Categeory`."""
+enum CategeoriesOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  NAME_ASC
+  NAME_DESC
+  DESCRIPTION_ASC
+  DESCRIPTION_DESC
+  IMAGE_URL_ASC
+  IMAGE_URL_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A condition to be used against `Categeory` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input CategeoryCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+
+  """Checks for equality with the object’s `name` field."""
+  name: String
+
+  """Checks for equality with the object’s `description` field."""
+  description: String
+
+  """Checks for equality with the object’s `imageUrl` field."""
+  imageUrl: String
 }
 
 """A connection to a list of `Customer` values."""
@@ -1067,77 +1285,25 @@ input CustomerCondition {
   primaryNumber: Int
 }
 
-"""A connection to a list of `Product` values."""
-type ProductsConnection {
-  """A list of `Product` objects."""
-  nodes: [Product]!
-
-  """
-  A list of edges which contains the `Product` and cursor to aid in pagination.
-  """
-  edges: [ProductsEdge!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `Product` you could get from the connection."""
-  totalCount: Int!
+input getCustomersInput {
+  primaryNumber: Int
 }
 
-"""A `Product` edge in the connection."""
-type ProductsEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `Product` at the end of the edge."""
-  node: Product
+type getOrderOutput {
+  orders: [orderDetails]
+  msg: String
 }
 
-"""Methods to use when ordering `Product`."""
-enum ProductsOrderBy {
-  NATURAL
-  ID_ASC
-  ID_DESC
-  PRODUCT_NAME_ASC
-  PRODUCT_NAME_DESC
-  UNIT_PRICE_ASC
-  UNIT_PRICE_DESC
-  PACKAGE_ASC
-  PACKAGE_DESC
-  IS_DISCONTINUED_ASC
-  IS_DISCONTINUED_DESC
-  AVAILABLE_QUANTITIY_ASC
-  AVAILABLE_QUANTITIY_DESC
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
-}
-
-"""
-A condition to be used against `Product` object types. All fields are tested for equality and combined with a logical ‘and.’
-"""
-input ProductCondition {
-  """Checks for equality with the object’s `id` field."""
+type orderDetails {
   id: Int
-
-  """Checks for equality with the object’s `productName` field."""
-  productName: String
-
-  """Checks for equality with the object’s `unitPrice` field."""
-  unitPrice: Int
-
-  """Checks for equality with the object’s `package` field."""
-  package: String
-
-  """Checks for equality with the object’s `isDiscontinued` field."""
-  isDiscontinued: Boolean
-
-  """Checks for equality with the object’s `availableQuantitiy` field."""
-  availableQuantitiy: Int
+  orderDate: Date
+  totalAmount: Int
+  isActive: Boolean
+  status: String
 }
 
-input customerInput {
-  id: Int
-}
+"""The day, does not include a time."""
+scalar Date
 
 input getOrderInput {
   primaryNumber: Int!
@@ -1154,6 +1320,14 @@ type Mutation {
     """
     input: CreateCartInput!
   ): CreateCartPayload
+
+  """Creates a single `Categeory`."""
+  createCategeory(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateCategeoryInput!
+  ): CreateCategeoryPayload
 
   """Creates a single `Customer`."""
   createCustomer(
@@ -1218,6 +1392,22 @@ type Mutation {
     """
     input: UpdateCartByIdInput!
   ): UpdateCartPayload
+
+  """Updates a single `Categeory` using its globally unique id and a patch."""
+  updateCategeory(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateCategeoryInput!
+  ): UpdateCategeoryPayload
+
+  """Updates a single `Categeory` using a unique key and a patch."""
+  updateCategeoryById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateCategeoryByIdInput!
+  ): UpdateCategeoryPayload
 
   """Updates a single `Customer` using its globally unique id and a patch."""
   updateCustomer(
@@ -1347,6 +1537,22 @@ type Mutation {
     input: DeleteCartByIdInput!
   ): DeleteCartPayload
 
+  """Deletes a single `Categeory` using its globally unique id."""
+  deleteCategeory(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteCategeoryInput!
+  ): DeleteCategeoryPayload
+
+  """Deletes a single `Categeory` using a unique key."""
+  deleteCategeoryById(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteCategeoryByIdInput!
+  ): DeleteCategeoryPayload
+
   """Deletes a single `Customer` using its globally unique id."""
   deleteCustomer(
     """
@@ -1458,36 +1664,36 @@ type Mutation {
     """
     input: DeleteSupplierByIdInput!
   ): DeleteSupplierPayload
-  add_customer(
+  addCustomer(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
     input: addCustInput!
   ): Customer
-  verifyingUserLogin(
+  loginCustomer(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
-    input: userLoginInput!
-  ): userLogin
+    input: customerLoginInput!
+  ): userLoginOutput
   update_customer(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
     input: updateCustInput!
-  ): updateCustomer
+  ): updateCustomerOutput
   delete_customer(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
     input: deleteCustInput!
-  ): deleteCustomer
+  ): deleteCustomerOutput
   createNewOrder(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
     input: createOrderInput!
-  ): createOrder
+  ): createOrderOutput
   makePayment(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -1555,6 +1761,49 @@ input CartInput {
   quantity: Int!
   customerId: Int
   productId: Int
+}
+
+"""The output of our create `Categeory` mutation."""
+type CreateCategeoryPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Categeory` that was created by this mutation."""
+  categeory: Categeory
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Categeory`. May be used by Relay 1."""
+  categeoryEdge(
+    """The method to use when ordering `Categeory`."""
+    orderBy: [CategeoriesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CategeoriesEdge
+}
+
+"""All input for the create `Categeory` mutation."""
+input CreateCategeoryInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Categeory` to be created by this mutation."""
+  categeory: CategeoryInput!
+}
+
+"""An input for mutations affecting `Categeory`"""
+input CategeoryInput {
+  id: Int
+  name: String!
+  description: String
+  imageUrl: String
 }
 
 """The output of our create `Customer` mutation."""
@@ -1648,6 +1897,7 @@ input OrderInput {
   totalAmount: Int
   isActive: Boolean
   customerId: Int
+  status: String
 }
 
 """The output of our create `OrderItem` mutation."""
@@ -1768,6 +2018,9 @@ type CreateProductPayload {
   """
   query: Query
 
+  """Reads a single `Categeory` that is related to this `Product`."""
+  categeoryByCategeoryId: Categeory
+
   """An edge for our `Product`. May be used by Relay 1."""
   productEdge(
     """The method to use when ordering `Product`."""
@@ -1795,6 +2048,7 @@ input ProductInput {
   package: String!
   isDiscontinued: Boolean!
   availableQuantitiy: Int
+  categeoryId: Int
 }
 
 """The output of our create `Supplier` mutation."""
@@ -1915,6 +2169,73 @@ input UpdateCartByIdInput {
   An object where the defined keys will be set on the `Cart` being updated.
   """
   cartPatch: CartPatch!
+  id: Int!
+}
+
+"""The output of our update `Categeory` mutation."""
+type UpdateCategeoryPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Categeory` that was updated by this mutation."""
+  categeory: Categeory
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Categeory`. May be used by Relay 1."""
+  categeoryEdge(
+    """The method to use when ordering `Categeory`."""
+    orderBy: [CategeoriesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CategeoriesEdge
+}
+
+"""All input for the `updateCategeory` mutation."""
+input UpdateCategeoryInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Categeory` to be updated.
+  """
+  nodeId: ID!
+
+  """
+  An object where the defined keys will be set on the `Categeory` being updated.
+  """
+  categeoryPatch: CategeoryPatch!
+}
+
+"""
+Represents an update to a `Categeory`. Fields that are set will be updated.
+"""
+input CategeoryPatch {
+  id: Int
+  name: String
+  description: String
+  imageUrl: String
+}
+
+"""All input for the `updateCategeoryById` mutation."""
+input UpdateCategeoryByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Categeory` being updated.
+  """
+  categeoryPatch: CategeoryPatch!
   id: Int!
 }
 
@@ -2057,6 +2378,7 @@ input OrderPatch {
   totalAmount: Int
   isActive: Boolean
   customerId: Int
+  status: String
 }
 
 """All input for the `updateOrderById` mutation."""
@@ -2255,6 +2577,9 @@ type UpdateProductPayload {
   """
   query: Query
 
+  """Reads a single `Categeory` that is related to this `Product`."""
+  categeoryByCategeoryId: Categeory
+
   """An edge for our `Product`. May be used by Relay 1."""
   productEdge(
     """The method to use when ordering `Product`."""
@@ -2291,6 +2616,7 @@ input ProductPatch {
   package: String
   isDiscontinued: Boolean
   availableQuantitiy: Int
+  categeoryId: Int
 }
 
 """All input for the `updateProductById` mutation."""
@@ -2428,6 +2754,54 @@ input DeleteCartInput {
 
 """All input for the `deleteCartById` mutation."""
 input DeleteCartByIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: Int!
+}
+
+"""The output of our delete `Categeory` mutation."""
+type DeleteCategeoryPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Categeory` that was deleted by this mutation."""
+  categeory: Categeory
+  deletedCategeoryId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Categeory`. May be used by Relay 1."""
+  categeoryEdge(
+    """The method to use when ordering `Categeory`."""
+    orderBy: [CategeoriesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CategeoriesEdge
+}
+
+"""All input for the `deleteCategeory` mutation."""
+input DeleteCategeoryInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Categeory` to be deleted.
+  """
+  nodeId: ID!
+}
+
+"""All input for the `deleteCategeoryById` mutation."""
+input DeleteCategeoryByIdInput {
   """
   An arbitrary string value with no semantic meaning. Will be included in the
   payload verbatim. May be used to track mutations by the client.
@@ -2680,6 +3054,9 @@ type DeleteProductPayload {
   """
   query: Query
 
+  """Reads a single `Categeory` that is related to this `Product`."""
+  categeoryByCategeoryId: Categeory
+
   """An edge for our `Product`. May be used by Relay 1."""
   productEdge(
     """The method to use when ordering `Product`."""
@@ -2771,42 +3148,42 @@ input addCustInput {
   primaryNumber: Int!
 }
 
-type userLogin {
-  msg: String!
+type userLoginOutput {
+  token: String
+  msg: String
 }
 
-input userLoginInput {
+input customerLoginInput {
   primaryNumber: Int!
   password: String!
 }
 
-type updateCustomer {
+type updateCustomerOutput {
   firstName: String
   lastName: String
   city: String
   country: String
-  phone: Int
-  id: Int
+  primaryNumber: Int
+  msg: String
 }
 
 input updateCustInput {
-  id: Int
   firstName: String
   lastName: String
   city: String
   country: String
-  phone: Int
+  primaryNumber: Int
 }
 
-type deleteCustomer {
+type deleteCustomerOutput {
   msg: String
 }
 
 input deleteCustInput {
-  id: Int
+  primaryNumber: Int
 }
 
-type createOrder {
+type createOrderOutput {
   isSuccess: Boolean
   message: String
   name: String
@@ -2829,9 +3206,6 @@ type order {
   totalAmount: Int
   id: Int
 }
-
-"""The day, does not include a time."""
-scalar Date
 
 input createOrderInput {
   customer: customerDataInput
@@ -2860,7 +3234,8 @@ type paymentOutput {
 }
 
 input paymentInput {
-  id: Int
+  paymentId: Int
+  token: String
 }
 
 type singleItemOrderOutput {

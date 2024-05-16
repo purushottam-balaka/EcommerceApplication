@@ -1,5 +1,6 @@
-import { PrimaryGeneratedColumn, Column, Entity, OneToMany,JoinColumn} from "typeorm";
+import { PrimaryGeneratedColumn, Column, Entity, OneToMany, ManyToOne, JoinColumn} from "typeorm";
 import { Supplier } from "./supplier-model";
+import { Categeory } from "./categeory-model";
 
 @Entity({schema:'app_ecommerce'})
 export class  Product{
@@ -24,4 +25,8 @@ export class  Product{
     @OneToMany(()=>Supplier, supplier=>supplier.productId)
     @JoinColumn({name:'supplierId'})
     supplierId:Supplier[]
+
+    @ManyToOne(()=>Categeory, categeory=>categeory.productId)
+    @JoinColumn({name:'categeoryId'})
+    categeoryId:Categeory
 }
